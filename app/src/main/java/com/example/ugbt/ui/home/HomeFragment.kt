@@ -14,6 +14,8 @@ import com.example.ugbt.R
 import com.example.ugbt.createAttackActivity
 import com.example.ugbt.databinding.FragmentHomeBinding
 import com.example.ugbt.eventDetailsAvtivity
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class HomeFragment : Fragment() {
 
@@ -44,8 +46,11 @@ class HomeFragment : Fragment() {
         bigButton.height = bigButton.width
         bigButton.text = "Start Recording \nAttack"
         bigButton.setOnClickListener {
+            val timeRaw = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yy")
+            val formatted = timeRaw.format(formatter)
             val intent = Intent(activity, createAttackActivity::class.java).apply {
-
+                putExtra("Time", formatted)
             }
             startActivity(intent)
 
