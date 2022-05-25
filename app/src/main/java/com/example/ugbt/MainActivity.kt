@@ -1,5 +1,6 @@
 package com.example.ugbt
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -8,9 +9,17 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.ugbt.databinding.ActivityMainBinding
+import io.realm.Realm
+import io.realm.RealmConfiguration
+import io.realm.kotlin.where
+import io.realm.log.RealmLog
+import io.realm.mongodb.User
+import io.realm.mongodb.sync.SyncConfiguration
 
 class MainActivity : AppCompatActivity() {
-
+    private lateinit var userRealm: Realm
+    private var user: User? = null
+    private lateinit var config: RealmConfiguration
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,5 +40,17 @@ class MainActivity : AppCompatActivity() {
         )
         //setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        try {
+            user = UGBTApp.currentUser()
+        } catch (e: IllegalStateException) {
+            RealmLog.warn(e)
+        }
+        if (user == null) {
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
     }
 }

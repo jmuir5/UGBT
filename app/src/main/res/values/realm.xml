@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="realm_app_id">ugbt-jukgp</string>
+    <string name="realm_app_url">https://realm.mongodb.com/groups/623a7d56f863b22d354dfc71/apps/628d6e01bc10d89aba117fe7</string>
+    <string name="realm_base_url">https://realm.mongodb.com</string>
+    <string name="realm_data_source_name">mongodb-atlas</string>
+</resources>

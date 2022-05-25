@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.ugbt.R
+import com.example.ugbt.createAttackActivity
 import com.example.ugbt.databinding.FragmentHomeBinding
 import com.example.ugbt.eventDetailsAvtivity
 
@@ -43,7 +44,7 @@ class HomeFragment : Fragment() {
         bigButton.height = bigButton.width
         bigButton.text = "Start Recording \nAttack"
         bigButton.setOnClickListener {
-            val intent = Intent(activity, eventDetailsAvtivity::class.java).apply {
+            val intent = Intent(activity, createAttackActivity::class.java).apply {
 
             }
             startActivity(intent)

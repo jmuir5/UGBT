@@ -20,30 +20,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />-->
     <LinearLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="#b19cd9">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="60"
-            android:text="UGBT"
-            android:textSize="40sp"
-            android:layout_margin="10dp"
-            android:textColor="@color/black"/>
-    </LinearLayout>
-    <LinearLayout
         android:id="@+id/intensityContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/frequencyContainer"
         android:background="@drawable/big_rainbow_button"
         android:layout_margin="10dp"
@@ -55,30 +37,22 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="50sp"
-            android:text="7"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="7"/>
         <TextView
             android:id="@+id/text_intensityLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:text="Average\nIntensity"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_intensity"/>
+            android:text="Average\nIntensity"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/frequencyContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
         android:orientation="vertical"
         app:layout_constraintStart_toEndOf="@+id/intensityContainer"
-        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/big_rainbow_button"
         android:layout_margin="10dp"
@@ -90,21 +64,14 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="50sp"
-            android:text="25"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="25"/>
         <TextView
             android:id="@+id/text_timeLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:text="average days between attacks"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_time"/>
+            android:text="average days between attacks"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/buttonHolder"
