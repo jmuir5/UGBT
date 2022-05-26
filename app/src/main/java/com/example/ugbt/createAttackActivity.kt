@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.edit
 import io.realm.Realm
+import io.realm.RealmConfiguration
 import io.realm.RealmList
 import io.realm.mongodb.User
 import io.realm.mongodb.sync.SyncConfiguration
@@ -69,6 +70,7 @@ class createAttackActivity : AppCompatActivity() {
 
     lateinit var dateTime:String
     lateinit var note:EditText
+    lateinit var trigger:EditText
 
     private var user: User? = null
     lateinit var realm: Realm
@@ -79,8 +81,9 @@ class createAttackActivity : AppCompatActivity() {
 
         //prep realm
         user = UGBTApp.currentUser()
-        var test = SyncConfiguration.Builder(user!!, "test")
-            .waitForInitialRemoteData()
+        val test = RealmConfiguration.Builder().name("default1")
+            .schemaVersion(0)
+            .deleteRealmIfMigrationNeeded()
             .build()
 
         Realm.setDefaultConfiguration(test)
@@ -156,6 +159,8 @@ class createAttackActivity : AppCompatActivity() {
         val timeLabel = findViewById<TextView>(R.id.timeLabel2)
         dateTime= intent.getStringExtra("Time").toString()
         timeLabel.text = dateTime
+
+        trigger = findViewById(R.id.triggerTxt)
 
 
         //populate spinners
@@ -238,6 +243,7 @@ class createAttackActivity : AppCompatActivity() {
             sharedPref.edit {
                 putInt("pausedAttack", 1)
                 putString("startTime", dateTime)
+                putString("trigger", trigger.text.toString())
                 val symptom = "symptom"
                 val intensity = "intensity"
                 if (symptomList.size > 0) {
@@ -261,7 +267,7 @@ class createAttackActivity : AppCompatActivity() {
             var symptomList = RealmList<String>()
             var intensityList = RealmList<Int>()
             for(i in 0..activeSymptoms) {
-                if (sSpinners[i].selectedItemPosition == 0) {
+                if (sSpinners[i].selectedItemPosition != 0) {
                     trueCount++
                     if (sSpinners[i].selectedItemPosition == 7) {
                         symptomList.add(symptomTA[i].text.toString())
@@ -272,8 +278,9 @@ class createAttackActivity : AppCompatActivity() {
             val timeRaw = LocalDateTime.now()
             val formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yy")
             val formatted = timeRaw.format(formatter)
+            val food = trigger.text.toString()
 
-            val toInsert = AttackItem2(OASpinner.selectedItemPosition, symptomList, intensityList, dateTime, formatted,  note.text.toString())
+            val toInsert = AttackItem2(food, OASpinner.selectedItemPosition, symptomList, intensityList, dateTime, formatted,  note.text.toString())
             realm.executeTransactionAsync { realm ->
                 realm.insert(toInsert)
             }
@@ -292,6 +299,7 @@ class createAttackActivity : AppCompatActivity() {
             activeSymptoms = 0
             timeLabel.text = sharedPref.getString("startTime", "none found")
             dateTime = timeLabel.text.toString()
+            trigger.setText(sharedPref.getString("trigger", "none"))
             note.setText(sharedPref.getString("note", "none"))
             var sympcount = sharedPref.getInt("sCount", 0)
             OASpinner.setSelection(sharedPref.getInt("OAintensity", 0))

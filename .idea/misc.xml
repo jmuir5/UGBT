@@ -3,15 +3,26 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/denise/StudioProjects/UGBT/app/src/main/res/drawable/big_rainbow_button.xml" value="0.2055" />
-        <entry key="..\:/Users/denise/StudioProjects/UGBT/app/src/main/res/layout/activity_create_attack.xml" value="0.1" />
-        <entry key="..\:/Users/denise/StudioProjects/UGBT/app/src/main/res/layout/activity_event_details_avtivity.xml" value="0.1" />
-        <entry key="..\:/Users/denise/StudioProjects/UGBT/app/src/main/res/layout/activity_login_activityh.xml" value="0.18489583333333334" />
-        <entry key="..\:/Users/denise/StudioProjects/UGBT/app/src/main/res/layout/fragment_home.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UGBT/app/src/main/res/drawable/big_rainbow_button.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UGBT/app/src/main/res/drawable/btn_center_gradient.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UGBT/app/src/main/res/drawable/rainbow_button.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UGBT/app/src/main/res/layout/activity_create_attack.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UGBT/app/src/main/res/layout/activity_event_details_avtivity.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UGBT/app/src/main/res/layout/activity_main.xml" value="0.15172101449275363" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UGBT/app/src/main/res/layout/activity_view_attack.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UGBT/app/src/main/res/layout/fragment_dashboard.xml" value="0.15172101449275363" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UGBT/app/src/main/res/layout/fragment_details.xml" value="0.225" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UGBT/app/src/main/res/layout/fragment_history.xml" value="0.2" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UGBT/app/src/main/res/layout/fragment_home.xml" value="0.15172101449275363" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UGBT/app/src/main/res/layout/history_cardview.xml" value="0.1094224924012158" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UGBT/app/src/main/res/menu/bottom_nav_menu.xml" value="0.225" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/out" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
   </component>
 </project>

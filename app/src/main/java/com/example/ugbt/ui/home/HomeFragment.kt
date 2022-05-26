@@ -8,13 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.ugbt.R
 import com.example.ugbt.createAttackActivity
 import com.example.ugbt.databinding.FragmentHomeBinding
-import com.example.ugbt.eventDetailsAvtivity
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 

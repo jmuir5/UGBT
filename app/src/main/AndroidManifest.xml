@@ -13,10 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UGBT">
         <activity
+            android:name=".viewAttackActivity"
+            android:exported="false" />
+        <activity
             android:name=".createAttackActivity"
             android:exported="false" />
         <activity
-            android:name=".eventDetailsAvtivity"
+            android:name=".eventDetailsActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
