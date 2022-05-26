@@ -1,5 +1,6 @@
 package com.example.ugbt.ui.home
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,6 +21,7 @@ import java.time.format.DateTimeFormatter
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
+    lateinit var bigButton:Button
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -36,7 +38,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val bigButton = Button(activity)
+        bigButton = Button(activity)
         bigButton.layoutParams = LinearLayout.LayoutParams(
             750,
             750
@@ -65,6 +67,9 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        val sharedPref = this.activity?.getSharedPreferences(
+            getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        if(sharedPref?.getInt("pausedAttack", 0)==1)bigButton.text = "Resume\nRecording\nAttack"
 
 
     }

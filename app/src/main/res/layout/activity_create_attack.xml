@@ -51,6 +51,23 @@
                 app:layout_constraintStart_toEndOf="@id/timeLabel"
                 app:layout_constraintTop_toTopOf="parent"/>
             <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/OAintensityLabel"
+                android:text="overall intensity:"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_margin="10dp"
+                app:layout_constraintEnd_toStartOf="@+id/OAintensitySpinner"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/timeLabel"/>
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/OAintensitySpinner"
+                app:layout_constraintTop_toBottomOf="@id/timeLabel"
+                app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/symptomsLabel"
@@ -60,7 +77,7 @@
                 android:layout_margin="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/timeLabel"/>
+                app:layout_constraintTop_toBottomOf="@+id/OAintensityLabel"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -349,12 +366,21 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
     <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X\n"
+        android:id="@+id/cancelBtn"
+        android:layout_margin="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/suspendButton"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <Button
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/suspendButton"
         android:layout_margin="10dp"
         android:text="Save and Return"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cancelBtn"
         app:layout_constraintEnd_toStartOf="@+id/finalizeButton"
         app:layout_constraintBottom_toBottomOf="parent"
         />

@@ -44,6 +44,8 @@ class createAttackActivity : AppCompatActivity() {
     lateinit var iSpin7:Spinner
     lateinit var iSpin8:Spinner
 
+    lateinit var OASpinner: Spinner
+
     lateinit var TA1:EditText
     lateinit var TA2:EditText
     lateinit var TA3:EditText
@@ -53,10 +55,12 @@ class createAttackActivity : AppCompatActivity() {
     lateinit var TA7:EditText
     lateinit var TA8:EditText
 
+
+    lateinit var cancelBtn:Button
     lateinit var addSymptomBtn:Button
     lateinit var removeSymptomBtn:Button
     
-    var activeSymptoms=1
+    var activeSymptoms=0
 
     lateinit var symptomcontainer:Array<ConstraintLayout>
     lateinit var sSpinners:Array<Spinner>
@@ -64,7 +68,7 @@ class createAttackActivity : AppCompatActivity() {
     lateinit var symptomTA:Array<EditText>
 
     lateinit var dateTime:String
-    lateinit var note:String
+    lateinit var note:EditText
 
     private var user: User? = null
     lateinit var realm: Realm
@@ -73,6 +77,7 @@ class createAttackActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_attack)
 
+        //prep realm
         user = UGBTApp.currentUser()
         var test = SyncConfiguration.Builder(user!!, "test")
             .waitForInitialRemoteData()
@@ -86,7 +91,7 @@ class createAttackActivity : AppCompatActivity() {
                 //setUpRecyclerView(realm)
             }
         })
-
+        //PREP PREFERENCES
         val sharedPref = this.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE)
         //prep containers
@@ -119,6 +124,8 @@ class createAttackActivity : AppCompatActivity() {
         iSpin7 = findViewById(R.id.intensitySpinner7)
         iSpin8 = findViewById(R.id.intensitySpinner8)
 
+        OASpinner = findViewById(R.id.OAintensitySpinner)
+
         //prep symptom text areas
         TA1 = findViewById(R.id.symptomTA1)
         TA2 = findViewById(R.id.symptomTA2)
@@ -144,12 +151,14 @@ class createAttackActivity : AppCompatActivity() {
         iSpinners = arrayOf(iSpin1, iSpin2, iSpin3, iSpin4, iSpin5, iSpin6, iSpin7, iSpin8)
         symptomTA = arrayOf(TA1, TA2, TA3, TA4, TA5, TA6, TA7, TA8)
 
+
+        //prep other things
         val timeLabel = findViewById<TextView>(R.id.timeLabel2)
         dateTime= intent.getStringExtra("Time").toString()
         timeLabel.text = dateTime
 
-        note=findViewById<EditText>(R.id.notesText).text.toString()
 
+        //populate spinners
         val symptomList = resources.getStringArray(R.array.symptoms)
         for (i in sSpinners.indices) {
             if (sSpinners[i] != null) {
@@ -180,8 +189,13 @@ class createAttackActivity : AppCompatActivity() {
                     android.R.layout.simple_spinner_item, intensityList
                 )
                 iSpinners[i].adapter = adapter
+                OASpinner.adapter = adapter
+
             }
         }
+
+
+        //prepare buttons and atach listeners
 
 
         addSymptomBtn=findViewById<Button>(R.id.addSymptomButton)
@@ -192,48 +206,130 @@ class createAttackActivity : AppCompatActivity() {
         removeSymptomBtn.setOnClickListener(){
             removeSymptom()
         }
+        note=findViewById<EditText>(R.id.notesText)
+
+        cancelBtn=findViewById<Button>(R.id.cancelBtn)
+        cancelBtn.setOnClickListener(){
+            sharedPref.edit{
+                putInt("pausedAttack", 0)
+                putInt("sCount", 0)
+                apply()
+
+            }
+            finish()
+        }
+
         val saveBtn = findViewById<Button>(R.id.suspendButton)
         saveBtn.setOnClickListener(){
+            note=findViewById<EditText>(R.id.notesText)
+
+            var trueCount = 0
             var symptomList = RealmList<String>()
             var intensityList = RealmList<Int>()
-            for(i in 0..activeSymptoms){
-                if(sSpinners[i].selectedItemPosition==7){
-                    symptomList.add(symptomTA[i].text.toString())
-                }else symptomList.add(sSpinners[i].selectedItem.toString())
-                intensityList.add(iSpinners[i].selectedItemPosition)
-            }
-            val toInsert = IncompleteAttackItem(symptomList, intensityList, dateTime, note)
-            realm.executeTransactionAsync { realm ->
-                realm.insert(toInsert)
+            for(i in 0..activeSymptoms) {
+                if (sSpinners[i].selectedItemPosition != 0) {
+                    trueCount++
+                    if (sSpinners[i].selectedItemPosition == 7) {
+                        symptomList.add(symptomTA[i].text.toString())
+                    } else symptomList.add(sSpinners[i].selectedItem.toString())
+                    intensityList.add(iSpinners[i].selectedItemPosition)
+                }
             }
             sharedPref.edit {
                 putInt("pausedAttack", 1)
-                putString("timeID", dateTime)
+                putString("startTime", dateTime)
+                val symptom = "symptom"
+                val intensity = "intensity"
+                if (symptomList.size > 0) {
+                    for (i in 0..activeSymptoms) {
+                        putString(symptom + i.toString(), symptomList[i])
+                        putInt(intensity + i.toString(), intensityList[i]!!)
+                    }
+                    putString("note", note.text.toString())
+                    putInt("OAintensity", OASpinner.selectedItemPosition)
+                    putInt("sCount", trueCount)
+                    apply()
+                }
+            }
+            activeSymptoms = 0
+            finish()
+        }
+        val finalizeBtn = findViewById<Button>(R.id.finalizeButton)
+        finalizeBtn.setOnClickListener(){
+
+            var trueCount = 0
+            var symptomList = RealmList<String>()
+            var intensityList = RealmList<Int>()
+            for(i in 0..activeSymptoms) {
+                if (sSpinners[i].selectedItemPosition == 0) {
+                    trueCount++
+                    if (sSpinners[i].selectedItemPosition == 7) {
+                        symptomList.add(symptomTA[i].text.toString())
+                    } else symptomList.add(sSpinners[i].selectedItem.toString())
+                    intensityList.add(iSpinners[i].selectedItemPosition)
+                }
+            }
+            val timeRaw = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yy")
+            val formatted = timeRaw.format(formatter)
+
+            val toInsert = AttackItem2(OASpinner.selectedItemPosition, symptomList, intensityList, dateTime, formatted,  note.text.toString())
+            realm.executeTransactionAsync { realm ->
+                realm.insert(toInsert)
+            }
+            activeSymptoms = 0
+            sharedPref.edit{
+                putInt("pausedAttack", 0)
+                putInt("sCount", 0)
                 apply()
             }
 
             finish()
         }
-        val finalizeBtn = findViewById<Button>(R.id.finalizeButton)
-        finalizeBtn.setOnClickListener(){
-            var symptomList = RealmList<String>()
-            var intensityList = RealmList<Int>()
-            for(i in 0..activeSymptoms){
-                if(sSpinners[i].selectedItemPosition==7){
-                    symptomList.add(symptomTA[i].text.toString())
-                }else symptomList.add(sSpinners[i].selectedItem.toString())
-                intensityList.add(iSpinners[i].selectedItemPosition)
+
+        //populate EVERYTHING if there is an incomplete attack
+        if (sharedPref.getInt("pausedAttack", 0)==1){
+            activeSymptoms = 0
+            timeLabel.text = sharedPref.getString("startTime", "none found")
+            dateTime = timeLabel.text.toString()
+            note.setText(sharedPref.getString("note", "none"))
+            var sympcount = sharedPref.getInt("sCount", 0)
+            OASpinner.setSelection(sharedPref.getInt("OAintensity", 0))
+            for(i in 0..sympcount) {
+                if(activeSymptoms==7)activeSymptoms--
+                addSymptom()
+                when (sharedPref.getString("symptom$i", "select symptom")) {
+                    "Select Symptom"->sSpinners[i].setSelection(0)
+                    "Pain" -> sSpinners[i].setSelection(1)
+                    "Nausea" -> sSpinners[i].setSelection(2)
+                    "Vomiting" -> sSpinners[i].setSelection(3)
+                    "Diarrhea" -> sSpinners[i].setSelection(4)
+                    "Fever" -> sSpinners[i].setSelection(5)
+                    "Chills" -> sSpinners[i].setSelection(6)
+                    else -> {
+                        sSpinners[i].setSelection(7)
+                        symptomTA[i].setText(sharedPref.getString("symptom$i", "select symptom"))
+                    }
+                }
+                iSpinners[i].setSelection(sharedPref.getInt("intensity$i", 0))
+
             }
-            val timeRaw = LocalDateTime.now()
-            val formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yy")
-            val formatted = timeRaw.format(formatter)
-            val toInsert = AttackItem(symptomList, intensityList, dateTime, formatted,  note)
-            realm.executeTransactionAsync { realm ->
-                realm.insert(toInsert)
-            }
-            finish()
+
         }
+
+
+
     }
+
+    /*<item>Pain</item>
+    <item>Nausea</item>
+    <item>Vomiting</item>
+    <item>Diarrhea</item>
+    <item>Fever</item>
+    <item>Chills</item>
+    <item>Other</item>*/
+
+
     
     private fun addSymptom(){
         activeSymptoms++

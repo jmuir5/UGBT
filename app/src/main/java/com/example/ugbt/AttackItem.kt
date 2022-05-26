@@ -9,7 +9,8 @@ import io.realm.annotations.Required
 import org.bson.codecs.pojo.annotations.BsonProperty
 
 
-open class AttackItem(symptomList: RealmList<String> = RealmList("default SL"),//arrayOf("default SL"),
+open class AttackItem2(OAIntensity:Int = 0,
+                      symptomList: RealmList<String> = RealmList("default SL"),//arrayOf("default SL"),
                       intensityList: RealmList<Int> = RealmList(-1),
                       startTime: String = "",
                       endTime: String = "",
@@ -17,7 +18,8 @@ open class AttackItem(symptomList: RealmList<String> = RealmList("default SL"),/
                       partition: String= "test"):RealmObject() {
     @PrimaryKey var _id: ObjectId = ObjectId()
     var _partition:String = partition
-    var symptomList: RealmList<String> =symptomList
+    var OAIntensity:Int = OAIntensity
+    var symptomList: RealmList<String> = symptomList
     var intensityList: RealmList<Int> = intensityList
     var startTime: String = startTime
     var endTime: String = endTime
