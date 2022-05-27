@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UGBT">
         <activity
-            android:name=".viewAttackActivity"
+            android:name=".listFreqActivity"
             android:exported="false" />
         <activity
             android:name=".createAttackActivity"

@@ -44,13 +44,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        try {
+        /*try {
             user = UGBTApp.currentUser()
         } catch (e: IllegalStateException) {
             RealmLog.warn(e)
         }
         if (user == null) {
             startActivity(Intent(this, LoginActivity::class.java))
-        }
+        }*/
     }
 }

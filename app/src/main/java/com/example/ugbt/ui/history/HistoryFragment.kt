@@ -39,7 +39,7 @@ class HistoryFragment : Fragment() {
         _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
         var toggleState=0
-        binding.calendarView.visibility = View.GONE
+        //binding.calendarView.visibility = View.GONE
 
 
         user = UGBTApp.currentUser()

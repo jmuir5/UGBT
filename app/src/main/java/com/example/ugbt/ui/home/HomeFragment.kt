@@ -10,14 +10,20 @@ import android.widget.Button
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.ugbt.AttackItem2
 import com.example.ugbt.R
+import com.example.ugbt.UGBTApp
 import com.example.ugbt.createAttackActivity
 import com.example.ugbt.databinding.FragmentHomeBinding
+import io.realm.Realm
+import io.realm.RealmConfiguration
+import io.realm.kotlin.where
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.math.round
 
 class HomeFragment : Fragment() {
-
+    lateinit var realm:Realm
     private var _binding: FragmentHomeBinding? = null
     lateinit var bigButton:Button
 
@@ -35,6 +41,22 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+
+        val test = RealmConfiguration.Builder().name("default1")
+            .schemaVersion(0)
+            .deleteRealmIfMigrationNeeded()
+            .build()
+
+        Realm.setDefaultConfiguration(test)
+        Realm.getInstanceAsync(test, object: Realm.Callback() {
+            override fun onSuccess(realm: Realm) {
+                // since this realm should live exactly as long as this activity, assign the realm to a member variable
+                this@HomeFragment.realm = realm
+                binding.textIntensity.text = averageIntensity()
+
+            }
+        })
 
         bigButton = Button(activity)
         bigButton.layoutParams = LinearLayout.LayoutParams(
@@ -70,5 +92,18 @@ class HomeFragment : Fragment() {
         if(sharedPref?.getInt("pausedAttack", 0)==1)bigButton.text = "Resume\nRecording\nAttack"
 
 
+    }
+    fun averageIntensity():String{
+        val attacks = realm.where<AttackItem2>().findAll()!!
+        var totalIntensity:Float = 0F
+        var counter=0
+
+        for (i in attacks.indices){
+            totalIntensity += attacks[i]!!.OAIntensity
+            counter++
+        }
+        totalIntensity /= counter
+        val roundoff = String.format("%.2f", totalIntensity)
+        return roundoff
     }
 }
