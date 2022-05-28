@@ -13,6 +13,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UGBT">
         <activity
+            android:name=".optionsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".triggerListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".intensityTimeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".painStatsActivity"
+            android:exported="false" />
+        <activity
             android:name=".listFreqActivity"
             android:exported="false" />
         <activity

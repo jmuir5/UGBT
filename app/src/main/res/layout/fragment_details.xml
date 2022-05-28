@@ -36,15 +36,18 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:id="@+id/triggerList"
             android:text="Trigger Food List/Frequency"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:id="@+id/painStats"
             android:text="Additional Pain Statistics"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Placeholder"/>
+            android:id="@+id/intensityTime"
+            android:text="Intensity/Time"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -60,6 +63,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:id="@+id/optionsBtn"
             android:text="Options"/>
     </LinearLayout>
     <LinearLayout

@@ -1,31 +1,20 @@
 package com.example.ugbt
 
-import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.kotlin.where
 
-class listFreqActivity : AppCompatActivity() {
+class triggerListActivity : AppCompatActivity() {
     private lateinit var realm: Realm
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list_freq)
-
-
-
-    }
-
-    override fun onResume() {
-        super.onResume()
+        setContentView(R.layout.activity_trigger_list)
         val test = RealmConfiguration.Builder().name("default1")
             .schemaVersion(0)
             .deleteRealmIfMigrationNeeded()
@@ -35,36 +24,35 @@ class listFreqActivity : AppCompatActivity() {
         Realm.getInstanceAsync(test, object : Realm.Callback() {
             override fun onSuccess(realm: Realm) {
                 // since this realm should live exactly as long as this activity, assign the realm to a member variable
-                this@listFreqActivity.realm = realm
+                this@triggerListActivity.realm = realm
                 val attacks = realm.where<AttackItem2>().findAll()!!
-                var symptomList = mutableListOf<String>()
-                var symptomCount = mutableListOf<Int>()
+                var triggerList = mutableListOf<String>()
+                var triggerCount = mutableListOf<Int>()
                 var attackCounter = 0
                 for (i in attacks.indices) {
                     attackCounter++
-                    for (j in attacks[i]!!.symptomList.indices) {
-                        if (symptomList.contains(attacks[i]!!.symptomList[j])) {
-                            for (k in symptomList.indices) {
-                                if (attacks[i]!!.symptomList[j] == symptomList[k]) {
-                                    symptomCount[k]++
-                                }
+
+                    if (triggerList.contains(attacks[i]!!.trigger)) {
+                        for (k in triggerList.indices) {
+                            if (attacks[i]!!.trigger == triggerList[k]) {
+                                triggerCount[k]++
                             }
-                        } else {
-                            symptomCount.add(1)
-                            attacks[i]!!.symptomList[j]?.let { symptomList.add(it) }
                         }
+                    } else {
+                        triggerCount.add(1)
+                        attacks[i]!!.trigger.let { triggerList.add(it) }
                     }
+
                 }
 
                 findViewById<TextView>(R.id.countLabel).text = attackCounter.toString()
 
-                for (i in symptomList.indices) {
-                    buildElement(symptomList[i], symptomCount[i], attackCounter)
+                for (i in triggerList.indices) {
+                    buildElement(triggerList[i], triggerCount[i], attackCounter)
                 }
             }
         })
     }
-
     private fun buildElement(
         symptom:String,
         count:Int,
@@ -72,7 +60,7 @@ class listFreqActivity : AppCompatActivity() {
     ) {
 
 
-        val symptomFreqSV = findViewById<LinearLayout>(R.id.LFScrollView)
+        val symptomFreqSV = findViewById<LinearLayout>(R.id.TriggerScrollView)
         val symptomFreqContainer = LinearLayout(this)
         val symptomContainer = LinearLayout(this)
         val countContainer = LinearLayout(this)
@@ -104,10 +92,10 @@ class listFreqActivity : AppCompatActivity() {
         symptomContainer.layoutParams = hlp
 
         val lp2 = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT)
-        lp2.weight = 25f
+        lp2.weight = 35f
         val lp3 = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT)
-        lp3.weight = 25f
-        lp3.gravity =Gravity.RIGHT
+        lp3.weight = 15f
+        lp3.gravity = Gravity.RIGHT
         countContainer.layoutParams = lp2
         FreqContainer.layoutParams = lp3
 

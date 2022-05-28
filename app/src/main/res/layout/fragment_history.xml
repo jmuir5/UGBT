@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/header"
         android:textSize="25sp"
-        android:text="List of Symptoms by Frequency"
+        android:text="History"
         android:layout_margin="10dp"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"

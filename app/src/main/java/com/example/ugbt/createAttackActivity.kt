@@ -278,9 +278,11 @@ class createAttackActivity : AppCompatActivity() {
             val timeRaw = LocalDateTime.now()
             val formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yy")
             val formatted = timeRaw.format(formatter)
+            val formatter2 = DateTimeFormatter.ofPattern("D")
+            val ordinal: Int = timeRaw.format(formatter2).toInt()
             val food = trigger.text.toString()
 
-            val toInsert = AttackItem2(food, OASpinner.selectedItemPosition, symptomList, intensityList, dateTime, formatted,  note.text.toString())
+            val toInsert = AttackItem2(food, OASpinner.selectedItemPosition, symptomList, intensityList, dateTime, formatted, ordinal,  note.text.toString())
             realm.executeTransactionAsync { realm ->
                 realm.insert(toInsert)
             }

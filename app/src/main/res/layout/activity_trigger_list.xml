@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".listFreqActivity">
+    tools:context=".triggerListActivity">
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/header"
-        android:textSize="25sp"
-        android:text="View Event"
-        android:layout_margin="10dp"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/header"
+    android:textSize="25sp"
+    android:text="Intensity Over Time"
+    android:layout_margin="10dp"
+    android:textColor="@color/black"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -47,8 +47,8 @@
             android:layout_height="wrap_content"
             android:textSize="22dp"
             android:textStyle="bold"
-            android:text="Symptoms"
-            android:id="@+id/symptomLabel"
+            android:text="Trigger"
+            android:id="@+id/triggerLabel"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/countLabel"/>
         <TextView
@@ -58,7 +58,7 @@
             android:textStyle="bold"
             android:text="Count"
             app:layout_constraintTop_toBottomOf="@id/countLabel"
-            app:layout_constraintStart_toEndOf="@id/symptomLabel"
+            app:layout_constraintStart_toEndOf="@id/triggerLabel"
             app:layout_constraintEnd_toStartOf="@id/frequencyLabel"/>
         <TextView
             android:layout_width="wrap_content"
@@ -69,29 +69,30 @@
             android:text="Frequency"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/countLabel"/>
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/symptomLabel"
+            app:layout_constraintTop_toBottomOf="@+id/triggerLabel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/LFScrollView"
+                android:id="@+id/TriggerScrollView"
                 android:orientation="vertical"
                 android:paddingLeft="10dp"/>
 
         </ScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:id="@+id/spacer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:orientation="horizontal" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

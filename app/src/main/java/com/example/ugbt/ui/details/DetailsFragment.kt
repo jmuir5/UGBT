@@ -36,16 +36,21 @@ class DetailsFragment : Fragment() {
 
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        user = UGBTApp.currentUser()
-        val test = RealmConfiguration.Builder().name("default3")
-            .schemaVersion(2)
-            .deleteRealmIfMigrationNeeded()
-            .build()
 
-        Realm.setDefaultConfiguration(test)
-        realm = Realm.getDefaultInstance()
         binding.listFreqBtn.setOnClickListener(){
             startActivity(Intent(activity, listFreqActivity::class.java))
+        }
+        binding.triggerList.setOnClickListener(){
+            startActivity(Intent(activity, triggerListActivity::class.java))
+        }
+        binding.painStats.setOnClickListener(){
+            startActivity(Intent(activity, painStatsActivity::class.java))
+        }
+        binding.intensityTime.setOnClickListener(){
+            startActivity(Intent(activity, intensityTimeActivity::class.java))
+        }
+        binding.optionsBtn.setOnClickListener(){
+            startActivity(Intent(activity, optionsActivity::class.java))
         }
         return root
     }

@@ -26,6 +26,7 @@ class HomeFragment : Fragment() {
     lateinit var realm:Realm
     private var _binding: FragmentHomeBinding? = null
     lateinit var bigButton:Button
+    var flip =false
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -42,18 +43,26 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
         val test = RealmConfiguration.Builder().name("default1")
             .schemaVersion(0)
             .deleteRealmIfMigrationNeeded()
             .build()
-
+        binding.frequencyContainer.setOnClickListener(){
+            if (!flip) {
+                flip=true
+                binding.textTimeLabel.text="Average time\nintense attacks"
+            }else{
+                flip=false
+                binding.textTimeLabel.text="Average time\nbetween attacks"
+            }
+        }
         Realm.setDefaultConfiguration(test)
         Realm.getInstanceAsync(test, object: Realm.Callback() {
             override fun onSuccess(realm: Realm) {
                 // since this realm should live exactly as long as this activity, assign the realm to a member variable
                 this@HomeFragment.realm = realm
                 binding.textIntensity.text = averageIntensity()
+                binding.textTime.text = timeBetweenAttacks(false)
 
             }
         })
@@ -90,7 +99,21 @@ class HomeFragment : Fragment() {
         val sharedPref = this.activity?.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE)
         if(sharedPref?.getInt("pausedAttack", 0)==1)bigButton.text = "Resume\nRecording\nAttack"
+        val test = RealmConfiguration.Builder().name("default1")
+            .schemaVersion(0)
+            .deleteRealmIfMigrationNeeded()
+            .build()
 
+        Realm.setDefaultConfiguration(test)
+        Realm.getInstanceAsync(test, object: Realm.Callback() {
+            override fun onSuccess(realm: Realm) {
+                // since this realm should live exactly as long as this activity, assign the realm to a member variable
+                this@HomeFragment.realm = realm
+                binding.textIntensity.text = averageIntensity()
+                binding.textTime.text = timeBetweenAttacks(flip)
+
+            }
+        })
 
     }
     fun averageIntensity():String{
@@ -105,5 +128,35 @@ class HomeFragment : Fragment() {
         totalIntensity /= counter
         val roundoff = String.format("%.2f", totalIntensity)
         return roundoff
+    }
+
+    fun timeBetweenAttacks(state:Boolean):String {
+        val attacks = realm.where<AttackItem2>().findAll()!!
+        var ordinalDates = mutableListOf<Int>()
+        var counter = -1
+        var runningTotal = 0
+        var subtractor = 0
+        var threshold=0
+        if (state){
+            val sharedPref = this.activity?.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+            threshold=sharedPref!!.getInt("intenseAttackThreshold", 0)
+        }
+
+        for (i in attacks.indices) {
+            if (attacks[i]?.OAIntensity!!>=threshold) {
+                ordinalDates.add(attacks[i]!!.ordinalDate)
+                counter++
+            }
+        }
+
+        for (i in ordinalDates.indices) {
+            ordinalDates[i] -= subtractor
+            if (i != 0) runningTotal += ordinalDates[i]
+            subtractor += ordinalDates[i]
+        }
+        return (runningTotal / counter).toString()
+
+
     }
 }

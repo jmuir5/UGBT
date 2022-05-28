@@ -15,6 +15,7 @@ open class AttackItem2(trigger:String = "defaultFood",
                       intensityList: RealmList<Int> = RealmList(-1),
                       startTime: String = "",
                       endTime: String = "",
+                       ordinalDate:Int = 0,
                       note:String = "",
                       partition: String= "test"):RealmObject() {
     @PrimaryKey var _id: ObjectId = ObjectId()
@@ -26,6 +27,7 @@ open class AttackItem2(trigger:String = "defaultFood",
     var intensityList: RealmList<Int> = intensityList
     var startTime: String = startTime
     var endTime: String = endTime
+    var ordinalDate:Int = ordinalDate
     var note:String = note
 
     /*fun getId():ObjectId{
