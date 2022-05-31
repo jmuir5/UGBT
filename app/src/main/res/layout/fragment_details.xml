@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/history_ll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -32,40 +32,58 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:id="@+id/listFreqBtn"
-            android:text="Symptom List/Frequency"/>
+            android:text="Symptom List/Frequency"
+            android:layout_margin="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_margin="10dp"
             android:id="@+id/triggerList"
-            android:text="Trigger Food List/Frequency"/>
+            android:text="Trigger Food List/Frequency"
+            app:layout_constraintTop_toBottomOf="@id/listFreqBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:id="@+id/painStats"
-            android:text="Additional Pain Statistics"/>
+            android:layout_margin="10dp"
+            android:text="Additional Pain Statistics"
+            app:layout_constraintTop_toBottomOf="@+id/triggerList"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:id="@+id/intensityTime"
-            android:text="Intensity/Time"/>
+            android:layout_margin="10dp"
+            android:text="Intensity/Time"
+            app:layout_constraintTop_toBottomOf="@id/painStats"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Placeholder"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Placeholder"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Placeholder"/>
+            android:id="@+id/infoBtn"
+            android:layout_margin="10dp"
+            android:text="Additional resources and information"
+            app:layout_constraintTop_toBottomOf="@id/intensityTime"
+            app:layout_constraintBottom_toTopOf="@id/optionsBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:id="@+id/optionsBtn"
-            android:text="Options"/>
-    </LinearLayout>
+            android:layout_margin="10dp"
+            android:text="Options"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="50dp"

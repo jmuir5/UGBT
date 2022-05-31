@@ -36,22 +36,27 @@ class DetailsFragment : Fragment() {
 
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        binding.listFreqBtn.setBackgroundResource(R.drawable.big_rainbow_button)
         binding.listFreqBtn.setOnClickListener(){
             startActivity(Intent(activity, listFreqActivity::class.java))
         }
+        binding.triggerList.setBackgroundResource(R.drawable.big_rainbow_button)
         binding.triggerList.setOnClickListener(){
             startActivity(Intent(activity, triggerListActivity::class.java))
         }
+        binding.painStats.setBackgroundResource(R.drawable.big_rainbow_button)
         binding.painStats.setOnClickListener(){
             startActivity(Intent(activity, painStatsActivity::class.java))
         }
+        binding.intensityTime.setBackgroundResource(R.drawable.big_rainbow_button)
         binding.intensityTime.setOnClickListener(){
             startActivity(Intent(activity, intensityTimeActivity::class.java))
         }
+        binding.optionsBtn.setBackgroundResource(R.drawable.big_rainbow_button)
         binding.optionsBtn.setOnClickListener(){
             startActivity(Intent(activity, optionsActivity::class.java))
         }
+        binding.infoBtn.setBackgroundResource(R.drawable.big_rainbow_button)
         return root
     }
 
