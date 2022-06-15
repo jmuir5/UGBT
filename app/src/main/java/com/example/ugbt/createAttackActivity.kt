@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.UserHandle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -233,6 +234,8 @@ class createAttackActivity : AppCompatActivity() {
             var intensityList = RealmList<Int>()
             for(i in 0..activeSymptoms) {
                 if (sSpinners[i].selectedItemPosition != 0) {
+                    Log.e("tag", "selectItemPosition = ${sSpinners[i].selectedItemPosition}")
+
                     trueCount++
                     if (sSpinners[i].selectedItemPosition == 7) {
                         symptomList.add(symptomTA[i].text.toString())
@@ -240,25 +243,49 @@ class createAttackActivity : AppCompatActivity() {
                     intensityList.add(iSpinners[i].selectedItemPosition)
                 }
             }
-            sharedPref.edit {
-                putInt("pausedAttack", 1)
-                putString("startTime", dateTime)
-                putString("trigger", trigger.text.toString())
-                val symptom = "symptom"
-                val intensity = "intensity"
-                if (symptomList.size > 0) {
-                    for (i in 0..activeSymptoms) {
-                        putString(symptom + i.toString(), symptomList[i])
-                        putInt(intensity + i.toString(), intensityList[i]!!)
-                    }
-                    putString("note", note.text.toString())
-                    putInt("OAintensity", OASpinner.selectedItemPosition)
-                    putInt("sCount", trueCount)
+            if(activeSymptoms==0){
+                sharedPref.edit{
+                    putInt("pausedAttack", 0)
+                    putInt("sCount", 0)
                     apply()
+
                 }
+                finish()
             }
-            activeSymptoms = 0
-            finish()
+            else {
+                sharedPref.edit {
+                    putInt("pausedAttack", 1)
+                    putString("startTime", dateTime)
+                    putString("trigger", trigger.text.toString())
+                    val symptom = "symptom"
+                    val intensity = "intensity"
+                    if (symptomList.size > 0) {
+                        Log.e("symptomList", symptomList.toString())
+                        Log.e("activeSymptoms", activeSymptoms.toString())
+
+                        for (i in 0..activeSymptoms - 1) {
+                            putString(symptom + i.toString(), symptomList[i])
+                            if (symptomList[i] == "Select Symptom") Log.e(
+                                "tag",
+                                "select symptom added"
+                            )
+                            if (symptomList[i] == "select symptom") Log.e(
+                                "tag",
+                                "select symptom added"
+                            )
+
+                            putInt(intensity + i.toString(), intensityList[i]!!)
+                        }
+                        putString("note", note.text.toString())
+                        putInt("OAintensity", OASpinner.selectedItemPosition)
+                        putInt("sCount", trueCount)
+                        apply()
+                    }
+                }
+
+                activeSymptoms = 0
+                finish()
+            }
         }
         val finalizeBtn = findViewById<Button>(R.id.finalizeButton)
         finalizeBtn.setOnClickListener(){
@@ -305,10 +332,10 @@ class createAttackActivity : AppCompatActivity() {
             note.setText(sharedPref.getString("note", "none"))
             var sympcount = sharedPref.getInt("sCount", 0)
             OASpinner.setSelection(sharedPref.getInt("OAintensity", 0))
-            for(i in 0..sympcount) {
+            for(i in 0..sympcount-1) {
                 if(activeSymptoms==7)activeSymptoms--
                 addSymptom()
-                when (sharedPref.getString("symptom$i", "select symptom")) {
+                when (sharedPref.getString("symptom$i", "default")) {
                     "Select Symptom"->sSpinners[i].setSelection(0)
                     "Pain" -> sSpinners[i].setSelection(1)
                     "Nausea" -> sSpinners[i].setSelection(2)

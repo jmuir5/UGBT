@@ -133,10 +133,11 @@ class HomeFragment : Fragment() {
     fun timeBetweenAttacks(state:Boolean):String {
         val attacks = realm.where<AttackItem2>().findAll()!!
         var ordinalDates = mutableListOf<Int>()
-        var counter = -1
+        var counter = 0
         var runningTotal = 0
         var subtractor = 0
         var threshold=0
+        if (attacks.size==0) return 0.toString()
         if (state){
             val sharedPref = this.activity?.getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE)
