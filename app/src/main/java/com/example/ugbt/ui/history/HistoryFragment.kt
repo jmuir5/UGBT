@@ -46,6 +46,7 @@ class HistoryFragment : Fragment() {
         val test = RealmConfiguration.Builder().name("default1")
             .schemaVersion(0)
             .deleteRealmIfMigrationNeeded()
+            .allowWritesOnUiThread(true)
             .build()
 
         Realm.setDefaultConfiguration(test)

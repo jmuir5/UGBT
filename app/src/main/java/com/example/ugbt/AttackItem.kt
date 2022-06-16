@@ -30,6 +30,9 @@ open class AttackItem2(trigger:String = "defaultFood",
     var ordinalDate:Int = ordinalDate
     var note:String = note
 
+    fun boobs(newString:String){
+        note=newString
+    }
     /*fun getId():ObjectId{
         return _id
     }

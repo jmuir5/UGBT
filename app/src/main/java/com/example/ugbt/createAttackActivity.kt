@@ -85,6 +85,7 @@ class createAttackActivity : AppCompatActivity() {
         val test = RealmConfiguration.Builder().name("default1")
             .schemaVersion(0)
             .deleteRealmIfMigrationNeeded()
+            .allowWritesOnUiThread(true)
             .build()
 
         Realm.setDefaultConfiguration(test)
@@ -243,7 +244,7 @@ class createAttackActivity : AppCompatActivity() {
                     intensityList.add(iSpinners[i].selectedItemPosition)
                 }
             }
-            if(activeSymptoms==0){
+            if(trueCount==0){
                 sharedPref.edit{
                     putInt("pausedAttack", 0)
                     putInt("sCount", 0)
@@ -261,9 +262,9 @@ class createAttackActivity : AppCompatActivity() {
                     val intensity = "intensity"
                     if (symptomList.size > 0) {
                         Log.e("symptomList", symptomList.toString())
-                        Log.e("activeSymptoms", activeSymptoms.toString())
+                        Log.e("activeSymptoms", trueCount.toString())
 
-                        for (i in 0..activeSymptoms - 1) {
+                        for (i in 0..trueCount - 1) {
                             putString(symptom + i.toString(), symptomList[i])
                             if (symptomList[i] == "Select Symptom") Log.e(
                                 "tag",
@@ -334,7 +335,7 @@ class createAttackActivity : AppCompatActivity() {
             OASpinner.setSelection(sharedPref.getInt("OAintensity", 0))
             for(i in 0..sympcount-1) {
                 if(activeSymptoms==7)activeSymptoms--
-                addSymptom()
+                if(i!=0)addSymptom()
                 when (sharedPref.getString("symptom$i", "default")) {
                     "Select Symptom"->sSpinners[i].setSelection(0)
                     "Pain" -> sSpinners[i].setSelection(1)

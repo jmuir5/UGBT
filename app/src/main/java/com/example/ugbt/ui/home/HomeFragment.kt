@@ -46,6 +46,7 @@ class HomeFragment : Fragment() {
         val test = RealmConfiguration.Builder().name("default1")
             .schemaVersion(0)
             .deleteRealmIfMigrationNeeded()
+            .allowWritesOnUiThread(true)
             .build()
         binding.frequencyContainer.setOnClickListener(){
             if (!flip) {
@@ -102,6 +103,7 @@ class HomeFragment : Fragment() {
         val test = RealmConfiguration.Builder().name("default1")
             .schemaVersion(0)
             .deleteRealmIfMigrationNeeded()
+            .allowWritesOnUiThread(true)
             .build()
 
         Realm.setDefaultConfiguration(test)

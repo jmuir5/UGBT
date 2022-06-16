@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import io.realm.Realm
+
 import io.realm.Realm.init
 import io.realm.RealmConfiguration
 import io.realm.kotlin.where
@@ -47,11 +50,14 @@ class eventDetailsActivity : AppCompatActivity() {
     lateinit var trigger:TextView
     lateinit var startTime:TextView
     lateinit var endTime:TextView
-    lateinit var note:TextView
+    lateinit var note:EditText
 
     lateinit var symptoms:Array<TextView>
     lateinit var intensities:Array<TextView>
     lateinit var containers:Array<ConstraintLayout>
+
+    lateinit var updateBtn: Button
+    lateinit var deleteBtn: Button
 
     private var user: User? = null
     lateinit var realm: Realm
@@ -110,6 +116,10 @@ class eventDetailsActivity : AppCompatActivity() {
         endTime = findViewById(R.id.endTimeLabel2)
         note = findViewById(R.id.notesText)
 
+        updateBtn = findViewById(R.id.updateButton)
+        deleteBtn = findViewById(R.id.deleteButton)
+
+
         symptoms = arrayOf(symptom1, symptom2, symptom3, symptom4, symptom5, symptom6, symptom7, symptom8)
         intensities = arrayOf(intensity1, intensity2, intensity3, intensity4, intensity5, intensity6, intensity7, intensity8)
         containers = arrayOf(container1, container2, container3, container4, container5, container6, container7, container8)
@@ -121,6 +131,7 @@ class eventDetailsActivity : AppCompatActivity() {
         val test = RealmConfiguration.Builder().name("default1")
             .schemaVersion(0)
             .deleteRealmIfMigrationNeeded()
+            .allowWritesOnUiThread(true)
             .build()
 
         Realm.setDefaultConfiguration(test)
@@ -135,7 +146,7 @@ class eventDetailsActivity : AppCompatActivity() {
                 trigger.text = currentAttack.trigger
                 startTime.text = currentAttack.startTime
                 endTime.text = currentAttack.endTime
-                note.text = currentAttack.note
+                note.setText(currentAttack.note)
                 Log.e("currentAttack.symptomList.size", currentAttack.symptomList.size.toString())
                 for(i in 0..currentAttack.symptomList.size-1){
                     Log.e("currentAttack.symptomList.size", currentAttack.symptomList.size.toString())
@@ -143,8 +154,34 @@ class eventDetailsActivity : AppCompatActivity() {
                     intensities[i].text = currentAttack.intensityList[i].toString()
                     containers[i].visibility = View.VISIBLE
                 }
+
             }
         })
+        updateBtn.setOnClickListener{
+
+
+            realm.executeTransaction {
+                val identifier = intent.getStringExtra("id")
+                var currentAttackUpdate = realm.where<AttackItem2>().contains("id2", identifier).findFirst()!!
+
+                var updateNote = note.text.toString()
+
+                currentAttackUpdate!!.note=updateNote
+            }
+
+
+        }
+        deleteBtn.setOnClickListener{
+            Log.e("button click", "Deletebutton clicked")
+            realm.executeTransaction {
+                val identifier = intent.getStringExtra("id")
+                var currentAttackUpdate = realm.where<AttackItem2>().contains("id2", identifier).findFirst()!!
+
+
+                currentAttackUpdate!!.deleteFromRealm()
+            }
+            finish()
+        }
         /*val identifier = intent.getStringExtra("id")
         currentAttack = realm.where<AttackItem2>().contains("id2", identifier).findFirst()!!
         OAIntensity.text = currentAttack.OAIntensity.toString()
