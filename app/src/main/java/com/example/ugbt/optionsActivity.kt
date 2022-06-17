@@ -2,8 +2,9 @@ package com.example.ugbt
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -14,8 +15,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import io.realm.Realm
 import io.realm.RealmConfiguration
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 
 class optionsActivity : AppCompatActivity() {
@@ -27,6 +26,7 @@ class optionsActivity : AppCompatActivity() {
 
         var optIntSpin = findViewById<Spinner>(R.id.optIntensitySpinner)
         var delButton = findViewById<Button>(R.id.deleteBtn)
+        var donateButton = findViewById<Button>(R.id.donateBtn)
         val sharedPref = this.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE)
 
@@ -36,6 +36,8 @@ class optionsActivity : AppCompatActivity() {
                 "5", "6", "7", "8", "9", "10")
         )
         optIntSpin.adapter = adapter
+        var itemSelected = sharedPref.getInt("intenseAttackThreshold", 0)
+        optIntSpin.setSelection(itemSelected)
         optIntSpin.onItemSelectedListener= object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 sharedPref.edit {
@@ -83,5 +85,12 @@ class optionsActivity : AppCompatActivity() {
 
         }
 
+        donateButton.setOnClickListener{
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.paypal.com/donate/?business=9YB4PR8TW4T2G&no_recurring=0&item_name=thankyou+for+supporting+the+developer&currency_code=AUD"))
+            startActivity(browserIntent)
+        }
+
     }
 }
+
+//https://www.paypal.com/donate/?business=9YB4PR8TW4T2G&no_recurring=0&item_name=thankyou+for+supporting+the+developer&currency_code=AUD

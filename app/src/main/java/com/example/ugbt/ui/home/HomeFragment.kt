@@ -56,6 +56,7 @@ class HomeFragment : Fragment() {
                 flip=false
                 binding.textTimeLabel.text="Average time\nbetween attacks"
             }
+            binding.textTime.text = timeBetweenAttacks(flip)
         }
         Realm.setDefaultConfiguration(test)
         Realm.getInstanceAsync(test, object: Realm.Callback() {
