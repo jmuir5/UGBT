@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UGBT">
         <activity
+            android:name=".additionalInfoActivity"
+            android:exported="false" />
+        <activity
             android:name=".optionsActivity"
             android:exported="false" />
         <activity

@@ -57,6 +57,9 @@ class DetailsFragment : Fragment() {
             startActivity(Intent(activity, optionsActivity::class.java))
         }
         binding.infoBtn.setBackgroundResource(R.drawable.big_rainbow_button)
+        binding.infoBtn.setOnClickListener(){
+            startActivity(Intent(activity, additionalInfoActivity::class.java))
+        }
         return root
     }
 

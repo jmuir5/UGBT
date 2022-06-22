@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".additionalInfoActivity">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/header"
+        android:textSize="25sp"
+        android:text="Additional  Information"
+        android:layout_margin="10dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:background="@drawable/rainbow_button"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        app:layout_constraintBottom_toTopOf="@id/spacer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="22sp"
+                    android:text="What is a Gallbladder"
+                    android:layout_margin="10dp"
+                    android:textColor="@color/black"
+                    android:id="@+id/title1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginVertical="10dp"
+                    android:id="@+id/body1"
+                    android:text="Your gallbladder is a 4-inch, pear-shaped organ. It’s positioned under your liver in the upper-right section of your abdomen.\n
+The gallbladder stores bile, a combination of fluids, fat, and cholesterol. Bile helps break down fat from food in your intestine.
+The gallbladder delivers bile into the small intestine. This allows fat-soluble vitamins and nutrients to be more easily absorbed into the bloodstream."
+                    app:layout_constraintTop_toBottomOf="@id/title1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="22sp"
+                    android:text="What are Gallstones"
+                    android:layout_margin="10dp"
+                    android:textColor="@color/black"
+                    android:id="@+id/title2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/body1"/>
+
+                <TextView
+                    android:id="@+id/body2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginTop="528dp"
+                    android:text="Gallstones are small, hardened deposits that form in the gallbladder. These deposits can develop and go undetected for years.\n
+Gallstones are usually very small, no more than a few millimeters wide. However, they can grow to several centimeters. Some people
+develop only one gallstone, while others develop several. As the gallstones grow in size, they can begin to block the channels that lead out of the gallbladder."
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/title2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="22sp"
+                    android:text="Gallbladder tests and diagnosis"
+                    android:layout_margin="10dp"
+                    android:textColor="@color/black"
+                    android:id="@+id/title3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/body2"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginVertical="10dp"
+                    android:id="@+id/body3"
+                    android:text="imaging tests are typically used to identify gallstones in your gallbladder. There are several types of image tests:\n
+ > Ultrasound. This test is considered the best imaging test for finding gallstones.\n
+ > Computed tomography (CT) scan. This combination of X-rays and technology can show gallstones as well as reveal complications such as blockage of the gallbladder or bile ducts.\n
+ > Magnetic resonance imaging (MRI). This test shows detailed images of your body’s organs and can show gallstones in your biliary tract ducts.\n
+ > Cholescintigraphy. Taking pictures of the biliary tract, this image scan can show gallbladder abnormalities and blockages in the bile ducts.\n
+ > Endoscopic retrograde cholangiopancreatography (ERCP). This more invasive procedure is often used to address an existing problem, such as a gallstone stuck in the common bile duct."
+                    app:layout_constraintTop_toBottomOf="@id/title3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="22sp"
+                    android:text="sources"
+                    android:layout_margin="10dp"
+                    android:textColor="@color/black"
+                    android:id="@+id/title4"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/body3"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginVertical="10dp"
+                    android:id="@+id/source1"
+                    android:text=" > healthline.com - Gallbladder problems"
+                    android:clickable="true"
+                    app:layout_constraintTop_toBottomOf="@id/title4"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:id="@+id/spacer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal" />
+</androidx.constraintlayout.widget.ConstraintLayout>
