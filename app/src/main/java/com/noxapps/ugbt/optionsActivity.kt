@@ -1,4 +1,4 @@
-package com.example.ugbt
+package com.noxapps.ugbt
 
 import android.content.Context
 import android.content.DialogInterface

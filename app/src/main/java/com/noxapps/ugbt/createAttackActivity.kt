@@ -11,6 +11,7 @@ import androidx.core.content.edit
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.RealmList
+import io.realm.kotlin.where
 import io.realm.mongodb.User
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -69,6 +70,7 @@ class createAttackActivity : AppCompatActivity() {
 
     lateinit var dateTime:String
     lateinit var note:EditText
+    lateinit var triggerSpinner:Spinner
     lateinit var trigger:EditText
 
     private var user: User? = null
@@ -160,11 +162,42 @@ class createAttackActivity : AppCompatActivity() {
         dateTime= intent.getStringExtra("Time").toString()
         timeLabel.text = dateTime
 
+        triggerSpinner = findViewById(R.id.triggerSpinner)
         trigger = findViewById(R.id.triggerTxt)
 
 
         //populate spinners
-        val symptomList = resources.getStringArray(R.array.symptoms)
+        var symptomList = resources.getStringArray(R.array.symptoms)
+        var symptomList2 = symptomList.toMutableList()
+        var triggerList = resources.getStringArray(R.array.triggerfood)
+        var triggerList2 = triggerList.toMutableList()
+        val attacks = realm.where<AttackItem2>().findAll()!!
+        for (i in attacks){
+            for (j in i.symptomList){
+                if(!symptomList.contains(j))symptomList2.add(j)
+            }
+            if(!triggerList2.contains(i.trigger))triggerList2.add(i.trigger)
+        }
+        symptomList2.add("Other")
+        symptomList = symptomList2.toTypedArray()
+        triggerList = triggerList2.toTypedArray()
+        val triggerAdapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item, triggerList
+        )
+        triggerSpinner.adapter = triggerAdapter
+        triggerSpinner.onItemSelectedListener= object:AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (position==1){
+                    trigger.visibility=View.VISIBLE
+                }else trigger.visibility=View.GONE
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                /* no-op */
+            }
+        }
+
         for (i in sSpinners.indices) {
             if (sSpinners[i] != null) {
                 val adapter = ArrayAdapter(
@@ -174,7 +207,7 @@ class createAttackActivity : AppCompatActivity() {
                 sSpinners[i].adapter = adapter
                 sSpinners[i]?.onItemSelectedListener= object:AdapterView.OnItemSelectedListener{
                     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        if (position==7){
+                        if (position==1){
                             symptomTA[i].visibility=View.VISIBLE
                         }else symptomTA[i].visibility=View.GONE
                     }

@@ -16,13 +16,17 @@
 
     <string-array name="symptoms">
         <item>Select Symptom</item>
+        <item>New Symptom</item>
         <item>Pain</item>
         <item>Nausea</item>
         <item>Vomiting</item>
         <item>Diarrhea</item>
         <item>Fever</item>
         <item>Chills</item>
-        <item>Other</item>
+    </string-array>
+    <string-array name="triggerfood">
+        <item>Select Symptom</item>
+        <item>New Trigger Food</item>
     </string-array>
     <string-array name="intensity">
         <item>0</item>
