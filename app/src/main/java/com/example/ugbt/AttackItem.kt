@@ -30,9 +30,6 @@ open class AttackItem2(trigger:String = "defaultFood",
     var ordinalDate:Int = ordinalDate
     var note:String = note
 
-    fun boobs(newString:String){
-        note=newString
-    }
     /*fun getId():ObjectId{
         return _id
     }
@@ -72,5 +69,8 @@ open class AttackItem2(trigger:String = "defaultFood",
 
     override fun toString(): String {
         return "Message: [id=$_id, symptomList=$symptomList, intensityList=$intensityList, startTime=$startTime, endTime=$endTime, note =$note partition=$_partition]"
+    }
+    fun export(): String {
+        return "[$_id,$symptomList,$intensityList,$startTime,$endTime,$note,$_partition]"
     }
 }

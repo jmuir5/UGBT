@@ -5,11 +5,9 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
@@ -27,6 +25,15 @@ class optionsActivity : AppCompatActivity() {
         var optIntSpin = findViewById<Spinner>(R.id.optIntensitySpinner)
         var delButton = findViewById<Button>(R.id.deleteBtn)
         var donateButton = findViewById<Button>(R.id.donateBtn)
+
+
+        var importText = findViewById<EditText>(R.id.importText)
+        var importButton = findViewById<Button>(R.id.importBtn)
+        var exportText = findViewById<EditText>(R.id.exportText)
+        var exportButton = findViewById<Button>(R.id.exportBtn)
+
+
+
         val sharedPref = this.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE)
 
@@ -69,7 +76,7 @@ class optionsActivity : AppCompatActivity() {
                                 this@optionsActivity.realm = realm
                                 //realm.executeTransaction { realm ->
                                     val attacks = realm.where<AttackItem2>(AttackItem2::class.java).findAll()!!
-                                    //attacks.deleteAllFromRealm()
+                                    attacks.deleteAllFromRealm()
 
                                // }
                             }
@@ -83,6 +90,36 @@ class optionsActivity : AppCompatActivity() {
             builder.create()
             builder.show()
 
+        }
+
+
+        exportButton.setOnClickListener{
+            var toExport=""
+            Log.e("Button clicked", "Export button clicked")
+            val test = RealmConfiguration.Builder().name("default1")
+                .allowWritesOnUiThread(true)
+                .schemaVersion(0)
+                .deleteRealmIfMigrationNeeded()
+                .build()
+
+            Realm.setDefaultConfiguration(test)
+            Realm.getInstanceAsync(test, object : Realm.Callback() {
+                override fun onSuccess(realm: Realm) {
+                    Log.e("Button clicked", "success")
+                    // since this realm should live exactly as long as this activity, assign the realm to a member variable
+                    this@optionsActivity.realm = realm
+                    //realm.executeTransaction { realm ->
+                    val attacks = realm.where<AttackItem2>(AttackItem2::class.java).findAll()!!
+                    attacks.forEach { it->
+                        toExport+=it.export()
+                        Log.e("Button clicked", it.export())
+                        Log.e("Button clicked", toExport)
+                        exportText.setText(toExport)
+                    }
+
+
+                }
+            })
         }
 
         donateButton.setOnClickListener{
