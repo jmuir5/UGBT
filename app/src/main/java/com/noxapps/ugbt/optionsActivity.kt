@@ -1,4 +1,4 @@
-package com.noxapps.ugbt
+package com.example.ugbt
 
 import android.content.Context
 import android.content.DialogInterface
@@ -93,13 +93,6 @@ class optionsActivity : AppCompatActivity() {
 
         }
         importButton.setOnClickListener{
-            val test = RealmConfiguration.Builder().name("default1")
-                .allowWritesOnUiThread(true)
-                .schemaVersion(0)
-                .deleteRealmIfMigrationNeeded()
-                .build()
-            importText.isEnabled=false
-            importButton.isEnabled=false
             try {
                 val importString = importText.text.toString()
 
@@ -111,51 +104,28 @@ class optionsActivity : AppCompatActivity() {
                     var intensityList = RealmList<Int>()
                     val symptomSplit = splitElements[2].split(",")
                     val intensitySplit = splitElements[3].split(",")
-                    for (i in symptomSplit)symptomList.add(i.substringAfter("[").substringBefore("]"))
-                    for (i in intensitySplit){
-                        val newInt = i.substringAfter("[").substringBefore("]").toInt()
-                        if (newInt>10||newInt<0)throw IllegalArgumentException("symptom intensity invalid")
-                        intensityList.add(newInt)
-                    }
-                    if (splitElements[1].toInt()>10||splitElements[1].toInt()<0)throw IllegalArgumentException("overall intensity invalid")
-                    if (symptomList.size>8)throw IllegalArgumentException("too many symptoms")
-                    if (intensityList.size>8)throw IllegalArgumentException("too many intensities")
-                    if (symptomList.size!=intensityList.size)throw IllegalArgumentException("symptom/intensity mismatch")
-                    if (splitElements[6].toInt()>366||splitElements[6].toInt()<0)throw IllegalArgumentException("ordinal date invalid")
-
+                    for (i in symptomSplit)Log.e("import", "symptom split ${i.substringAfter("[").substringBefore("]")}")
+                    for (i in intensitySplit)Log.e("import", "intensity split ${i.substringAfter("[").substringBefore("]")}")
                     Log.e("import", "trigger=${splitElements[0]}")
                     Log.e("import", "oaIntensity=${splitElements[1]}")
-                    Log.e("import", "symptomList=${symptomList}")
-                    Log.e("import", "intensityList=${intensityList}")
+                    Log.e("import", "symptomList=${splitElements[2]}")
+                    Log.e("import", "intensityList=${splitElements[3]}")
                     Log.e("import", "startDate=${splitElements[4]}")
                     Log.e("import", "EndDate=${splitElements[5]}")
                     Log.e("import", "ordinal=${splitElements[6]}")
                     Log.e("import", "note=${splitElements[7]}")
                     Log.e("import", "partition=${splitElements[8]}")
-                    val toInsert = AttackItem2(splitElements[0], splitElements[1].toInt(), symptomList,
+                    /*val toInsert = AttackItem2(splitElements[0], splitElements[1].toInt(), symptomList,
                         intensityList, splitElements[4], splitElements[5], splitElements[6].toInt(),  splitElements[7])
-                    Realm.getInstanceAsync(test, object : Realm.Callback() {
-                        override fun onSuccess(realm: Realm) {
-                            // since this realm should live exactly as long as this activity, assign the realm to a member variable
-                            this@optionsActivity.realm = realm
-                            //realm.executeTransaction { realm ->
-                            realm.executeTransactionAsync { realm ->
-                                realm.insert(toInsert)
-                                importText.setText("attacks imported successfully")
-                                // }
-                            }
-                        }
-                    })
-
-
+                    realm.executeTransactionAsync { realm ->
+                        realm.insert(toInsert)
+                    }*/
                 }
 
             }catch (e:Exception){
                 importText.setText("malformed import string. if you think this is a mistake contact the developer")
-                Log.e("error", e.toString())
+
             }
-            importText.isEnabled=true
-            importButton.isEnabled=true
         }
 
         exportButton.setOnClickListener{
