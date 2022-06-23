@@ -71,6 +71,6 @@ open class AttackItem2(trigger:String = "defaultFood",
         return "Message: [id=$_id, symptomList=$symptomList, intensityList=$intensityList, startTime=$startTime, endTime=$endTime, note =$note partition=$_partition]"
     }
     fun export(): String {
-        return "[$_id,$symptomList,$intensityList,$startTime,$endTime,$note,$_partition]"
+        return "$trigger,!,$OAIntensity,!,$symptomList,!,$intensityList,!,$startTime,!,$endTime,!,$ordinalDate,!,$note,!,$_partition;!;"
     }
 }

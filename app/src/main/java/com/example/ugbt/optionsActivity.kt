@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import io.realm.RealmList
 
 
 class optionsActivity : AppCompatActivity() {
@@ -91,7 +92,41 @@ class optionsActivity : AppCompatActivity() {
             builder.show()
 
         }
+        importButton.setOnClickListener{
+            try {
+                val importString = importText.text.toString()
 
+                val importSplit = importString.split(";!;")
+                for (i in importSplit) {
+                    if (i.length == 0) break
+                    val splitElements = i.split(",!,")
+                    var symptomList = RealmList<String>()
+                    var intensityList = RealmList<Int>()
+                    val symptomSplit = splitElements[2].split(",")
+                    val intensitySplit = splitElements[3].split(",")
+                    for (i in symptomSplit)Log.e("import", "symptom split ${i.substringAfter("[").substringBefore("]")}")
+                    for (i in intensitySplit)Log.e("import", "intensity split ${i.substringAfter("[").substringBefore("]")}")
+                    Log.e("import", "trigger=${splitElements[0]}")
+                    Log.e("import", "oaIntensity=${splitElements[1]}")
+                    Log.e("import", "symptomList=${splitElements[2]}")
+                    Log.e("import", "intensityList=${splitElements[3]}")
+                    Log.e("import", "startDate=${splitElements[4]}")
+                    Log.e("import", "EndDate=${splitElements[5]}")
+                    Log.e("import", "ordinal=${splitElements[6]}")
+                    Log.e("import", "note=${splitElements[7]}")
+                    Log.e("import", "partition=${splitElements[8]}")
+                    /*val toInsert = AttackItem2(splitElements[0], splitElements[1].toInt(), symptomList,
+                        intensityList, splitElements[4], splitElements[5], splitElements[6].toInt(),  splitElements[7])
+                    realm.executeTransactionAsync { realm ->
+                        realm.insert(toInsert)
+                    }*/
+                }
+
+            }catch (e:Exception){
+                importText.setText("malformed import string. if you think this is a mistake contact the developer")
+
+            }
+        }
 
         exportButton.setOnClickListener{
             var toExport=""
@@ -110,14 +145,12 @@ class optionsActivity : AppCompatActivity() {
                     this@optionsActivity.realm = realm
                     //realm.executeTransaction { realm ->
                     val attacks = realm.where<AttackItem2>(AttackItem2::class.java).findAll()!!
-                    attacks.forEach { it->
-                        toExport+=it.export()
-                        Log.e("Button clicked", it.export())
-                        Log.e("Button clicked", toExport)
-                        exportText.setText(toExport)
+                    for (i in attacks.indices){
+                        Log.e("Button clicked", "i=$i")
+                        Log.e("Button clicked", "exported=${attacks[i]!!.export()}")
+                        toExport+=attacks[i]!!.export()
                     }
-
-
+                    exportText.setText(toExport)
                 }
             })
         }
