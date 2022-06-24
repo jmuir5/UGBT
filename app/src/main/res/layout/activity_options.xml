@@ -147,7 +147,8 @@
                     android:textSize="18sp"
                     android:layout_marginVertical="10dp"
                     android:id="@+id/exportBody"
-                    android:text="use the above button to export attacks.\nthe attacks will be stored as a string that you can save somewhere and later import."
+                    android:text="use the above button to export attacks.\nthe attacks will be stored as a string that you can save somewhere and later import.\n
+its strongly recommended that you do this before updating as attacks can be lost during updates"
                     app:layout_constraintTop_toBottomOf="@id/exportBtn"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
