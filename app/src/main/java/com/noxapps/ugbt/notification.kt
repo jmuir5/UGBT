@@ -14,11 +14,14 @@ const val messageExtra = "MessageExtra"
 
 class Notification : BroadcastReceiver(){
     override fun onReceive(context: Context, intent: Intent) {
+        val intent2 = Intent(context, createAttackActivity::class.java)
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent2, PendingIntent.FLAG_IMMUTABLE)
 
         val notification = NotificationCompat.Builder(context, channelID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(intent.getStringExtra(titleExtra))
             .setContentText(intent.getStringExtra(messageExtra))
+            .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .build()
 
