@@ -386,6 +386,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/triggerSpinner"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/triggerLabel"
             app:layout_constraintTop_toBottomOf="@+id/addSymptomButton"/>
@@ -396,7 +397,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addSymptomButton" />
+            app:layout_constraintTop_toBottomOf="@+id/triggerLabel" />
 
         <TextView
             android:id="@+id/notesLabel"
@@ -408,7 +409,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/triggerLabel" />
+            app:layout_constraintTop_toBottomOf="@id/triggerTxt" />
 
         <EditText
             android:id="@+id/notesText"
@@ -420,37 +421,40 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/notesLabel" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="X\n"
-        android:id="@+id/cancelBtn"
-        android:layout_margin="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/suspendButton"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <Button
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/suspendButton"
-        android:layout_margin="10dp"
-        android:text="Save and Return"
-        app:layout_constraintStart_toEndOf="@id/cancelBtn"
-        app:layout_constraintEnd_toStartOf="@+id/finalizeButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
-    <Button
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/finalizeButton"
-        android:layout_margin="10dp"
-        android:text="Save and Finalize"
-        app:layout_constraintStart_toEndOf="@+id/suspendButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:text="Clear &amp; return"
+            android:id="@+id/cancelBtn"
+            android:layout_margin="10dp" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:id="@+id/suspendButton"
+            android:layout_margin="10dp"
+            android:text="Save &amp; Return"
+            />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:id="@+id/finalizeButton"
+            android:layout_margin="10dp"
+            android:text="Save &amp; Finalize"
+            />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

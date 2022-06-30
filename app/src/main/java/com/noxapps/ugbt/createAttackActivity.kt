@@ -1,11 +1,15 @@
 package com.noxapps.ugbt
 
+import android.app.*
 import android.content.Context
+import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.edit
 import io.realm.Realm
@@ -15,6 +19,8 @@ import io.realm.kotlin.where
 import io.realm.mongodb.User
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.coroutines.EmptyCoroutineContext.plus
 
 class createAttackActivity : AppCompatActivity() {
 
@@ -80,22 +86,11 @@ class createAttackActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_attack)
 
+        createNotificationChannel()
+
         //prep realm
         user = UGBTApp.currentUser()
-        val test = RealmConfiguration.Builder().name("default1")
-            .schemaVersion(0)
-            .deleteRealmIfMigrationNeeded()
-            .allowWritesOnUiThread(true)
-            .build()
 
-        Realm.setDefaultConfiguration(test)
-        Realm.getInstanceAsync(test, object: Realm.Callback() {
-            override fun onSuccess(realm: Realm) {
-                // since this realm should live exactly as long as this activity, assign the realm to a member variable
-                this@createAttackActivity.realm = realm
-                //setUpRecyclerView(realm)
-            }
-        })
         //PREP PREFERENCES
         val sharedPref = this.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE)
@@ -171,53 +166,73 @@ class createAttackActivity : AppCompatActivity() {
         var symptomList2 = symptomList.toMutableList()
         var triggerList = resources.getStringArray(R.array.triggerfood)
         var triggerList2 = triggerList.toMutableList()
-        val attacks = realm.where<AttackItem2>().findAll()!!
-        for (i in attacks){
-            for (j in i.symptomList){
-                if(!symptomList.contains(j))symptomList2.add(j)
-            }
-            if(!triggerList2.contains(i.trigger))triggerList2.add(i.trigger)
-        }
-        symptomList2.add("Other")
-        symptomList = symptomList2.toTypedArray()
-        triggerList = triggerList2.toTypedArray()
-        val triggerAdapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item, triggerList
-        )
-        triggerSpinner.adapter = triggerAdapter
-        triggerSpinner.onItemSelectedListener= object:AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (position==1){
-                    trigger.visibility=View.VISIBLE
-                }else trigger.visibility=View.GONE
-            }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                /* no-op */
-            }
-        }
 
-        for (i in sSpinners.indices) {
-            if (sSpinners[i] != null) {
-                val adapter = ArrayAdapter(
-                    this,
-                    android.R.layout.simple_spinner_item, symptomList
+
+        val test = RealmConfiguration.Builder().name("default1")
+            .schemaVersion(0)
+            .deleteRealmIfMigrationNeeded()
+            .allowWritesOnUiThread(true)
+            .build()
+
+        Realm.setDefaultConfiguration(test)
+        Realm.getInstanceAsync(test, object: Realm.Callback() {
+            override fun onSuccess(realm: Realm) {
+                // since this realm should live exactly as long as this activity, assign the realm to a member variable
+                this@createAttackActivity.realm = realm
+                //setUpRecyclerView(realm)
+                val attacks = realm.where<AttackItem2>().findAll()!!
+                for (i in attacks){
+                    for (j in i.symptomList){
+                        Log.e("Symptom", j)
+                        if(!(symptomList.contains(j)||symptomList2.contains(j)))symptomList2.add(j)
+                    }
+                    if(!triggerList2.contains(i.trigger))triggerList2.add(i.trigger)
+                }
+                symptomList = symptomList2.toTypedArray()
+                triggerList = triggerList2.toTypedArray()
+                val triggerAdapter = ArrayAdapter(
+                    this@createAttackActivity,
+                    android.R.layout.simple_spinner_item, triggerList
                 )
-                sSpinners[i].adapter = adapter
-                sSpinners[i]?.onItemSelectedListener= object:AdapterView.OnItemSelectedListener{
+                triggerSpinner.adapter = triggerAdapter
+                triggerSpinner.onItemSelectedListener= object:AdapterView.OnItemSelectedListener{
                     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                         if (position==1){
-                            symptomTA[i].visibility=View.VISIBLE
-                        }else symptomTA[i].visibility=View.GONE
+                            trigger.visibility=View.VISIBLE
+                        }else trigger.visibility=View.GONE
                     }
 
                     override fun onNothingSelected(p0: AdapterView<*>?) {
                         /* no-op */
                     }
                 }
+
+                for (i in sSpinners.indices) {
+                    if (sSpinners[i] != null) {
+                        val adapter = ArrayAdapter(
+                            this@createAttackActivity,
+                            android.R.layout.simple_spinner_item, symptomList
+                        )
+                        sSpinners[i].adapter = adapter
+                        sSpinners[i]?.onItemSelectedListener= object:AdapterView.OnItemSelectedListener{
+                            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                                if (position==1){
+                                    symptomTA[i].visibility=View.VISIBLE
+                                }else symptomTA[i].visibility=View.GONE
+                            }
+
+                            override fun onNothingSelected(p0: AdapterView<*>?) {
+                                /* no-op */
+                            }
+                        }
+                    }
+                }
+
             }
-        }
+        })
+
+
 
         val intensityList = resources.getStringArray(R.array.intensity)
         for (i in sSpinners.indices) {
@@ -269,7 +284,7 @@ class createAttackActivity : AppCompatActivity() {
                     Log.e("tag", "selectItemPosition = ${sSpinners[i].selectedItemPosition}")
 
                     trueCount++
-                    if (sSpinners[i].selectedItemPosition == 7) {
+                    if (sSpinners[i].selectedItemPosition == 1) {
                         symptomList.add(symptomTA[i].text.toString())
                     } else symptomList.add(sSpinners[i].selectedItem.toString())
                     intensityList.add(iSpinners[i].selectedItemPosition)
@@ -288,7 +303,8 @@ class createAttackActivity : AppCompatActivity() {
                 sharedPref.edit {
                     putInt("pausedAttack", 1)
                     putString("startTime", dateTime)
-                    putString("trigger", trigger.text.toString())
+                    if(triggerSpinner.selectedItemPosition!=1)putString("trigger", triggerSpinner.selectedItem.toString())
+                    else putString("trigger", trigger.text.toString())
                     val symptom = "symptom"
                     val intensity = "intensity"
                     if (symptomList.size > 0) {
@@ -316,6 +332,7 @@ class createAttackActivity : AppCompatActivity() {
                 }
 
                 activeSymptoms = 0
+                scheduleNotification()
                 finish()
             }
         }
@@ -328,7 +345,7 @@ class createAttackActivity : AppCompatActivity() {
             for(i in 0..activeSymptoms) {
                 if (sSpinners[i].selectedItemPosition != 0) {
                     trueCount++
-                    if (sSpinners[i].selectedItemPosition == 7) {
+                    if (sSpinners[i].selectedItemPosition == 1) {
                         symptomList.add(symptomTA[i].text.toString())
                     } else symptomList.add(sSpinners[i].selectedItem.toString())
                     intensityList.add(iSpinners[i].selectedItemPosition)
@@ -339,8 +356,9 @@ class createAttackActivity : AppCompatActivity() {
             val formatted = timeRaw.format(formatter)
             val formatter2 = DateTimeFormatter.ofPattern("D")
             val ordinal: Int = timeRaw.format(formatter2).toInt()
-            val food = trigger.text.toString()
-
+            var food = ""
+            if(triggerSpinner.selectedItemPosition==1)food=trigger.text.toString()
+            else food = triggerSpinner.selectedItem.toString()
             val toInsert = AttackItem2(food, OASpinner.selectedItemPosition, symptomList, intensityList, dateTime, formatted, ordinal,  note.text.toString())
             realm.executeTransactionAsync { realm ->
                 realm.insert(toInsert)
@@ -369,14 +387,14 @@ class createAttackActivity : AppCompatActivity() {
                 if(i!=0)addSymptom()
                 when (sharedPref.getString("symptom$i", "default")) {
                     "Select Symptom"->sSpinners[i].setSelection(0)
-                    "Pain" -> sSpinners[i].setSelection(1)
-                    "Nausea" -> sSpinners[i].setSelection(2)
-                    "Vomiting" -> sSpinners[i].setSelection(3)
-                    "Diarrhea" -> sSpinners[i].setSelection(4)
-                    "Fever" -> sSpinners[i].setSelection(5)
-                    "Chills" -> sSpinners[i].setSelection(6)
+                    "Pain" -> sSpinners[i].setSelection(2)
+                    "Nausea" -> sSpinners[i].setSelection(3)
+                    "Vomiting" -> sSpinners[i].setSelection(4)
+                    "Diarrhea" -> sSpinners[i].setSelection(5)
+                    "Fever" -> sSpinners[i].setSelection(6)
+                    "Chills" -> sSpinners[i].setSelection(7)
                     else -> {
-                        sSpinners[i].setSelection(7)
+                        sSpinners[i].setSelection(1)
                         symptomTA[i].setText(sharedPref.getString("symptom$i", "select symptom"))
                     }
                 }
@@ -388,6 +406,11 @@ class createAttackActivity : AppCompatActivity() {
 
 
 
+    }
+
+    override fun onBackPressed() {
+        scheduleNotification()
+        moveTaskToBack(true)
     }
 
     /*<item>Pain</item>
@@ -411,5 +434,50 @@ class createAttackActivity : AppCompatActivity() {
         activeSymptoms--
         if (activeSymptoms<7)addSymptomBtn.visibility=View.VISIBLE
         if (activeSymptoms==0)removeSymptomBtn.visibility=View.GONE
+    }
+    //notification shits
+
+    private fun scheduleNotification() {
+        val intent = Intent(applicationContext, Notification::class.java)
+        val title = "GallBladder Diary"
+        val message = "You have an unsaved attack in progress, would you like to complete it now?"
+        intent.putExtra(titleExtra, title)
+        intent.putExtra(messageExtra, message)
+        val resultIntent = Intent(this, createAttackActivity::class.java)
+
+        var pendingIntent: PendingIntent? = TaskStackBuilder.create(this).run {
+            // Add the intent, which inflates the back stack
+            addNextIntentWithParentStack(resultIntent)
+            // Get the PendingIntent containing the entire back stack
+            getPendingIntent(0,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        }
+        pendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            notificationID,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        var time = Calendar.getInstance()
+        time.add(Calendar.MINUTE, 2)
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            time.timeInMillis,
+            pendingIntent
+        )
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel()
+    {
+        val name = "Notif Channel"
+        val desc = "A Description of the Channel"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(channelID, name, importance)
+        channel.description = desc
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 }

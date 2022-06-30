@@ -25,7 +25,7 @@
         <item>Chills</item>
     </string-array>
     <string-array name="triggerfood">
-        <item>Select Symptom</item>
+        <item>Select Trigger</item>
         <item>New Trigger Food</item>
     </string-array>
     <string-array name="intensity">
